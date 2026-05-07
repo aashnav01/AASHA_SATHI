@@ -1,0 +1,212 @@
+{
+  "version": "2024_q1",
+  "source": "MoHFW Public Health Facilities Master",
+  "description": "PHC (Primary Health Centers) and FRU (First Referral Units) across India for emergency referral",
+  "facilities": [
+    {
+      "id": "phc_maharashtra_001",
+      "name": "PHC Jogeshwari",
+      "type": "PHC",
+      "state": "Maharashtra",
+      "district": "Mumbai",
+      "latitude": 19.0688,
+      "longitude": 72.8249,
+      "phone": "9876543210",
+      "address": "Jogeshwari West, Mumbai"
+    },
+    {
+      "id": "fru_maharashtra_001",
+      "name": "Civil Hospital",
+      "type": "FRU",
+      "state": "Maharashtra",
+      "district": "Mumbai",
+      "latitude": 18.9598,
+      "longitude": 72.8194,
+      "phone": "9876543211",
+      "address": "Fort, Mumbai"
+    },
+    {
+      "id": "phc_karnataka_001",
+      "name": "PHC Yeshwanthpur",
+      "type": "PHC",
+      "state": "Karnataka",
+      "district": "Bangalore",
+      "latitude": 13.3489,
+      "longitude": 77.5941,
+      "phone": "9876543220",
+      "address": "Yeshwanthpur, Bangalore"
+    },
+    {
+      "id": "fru_karnataka_001",
+      "name": "KIMS Hospital",
+      "type": "FRU",
+      "state": "Karnataka",
+      "district": "Bangalore",
+      "latitude": 13.2298,
+      "longitude": 77.6355,
+      "phone": "9876543221",
+      "address": "Marathahalli, Bangalore"
+    },
+    {
+      "id": "phc_uttarpradesh_001",
+      "name": "PHC Ghaziabad",
+      "type": "PHC",
+      "state": "Uttar Pradesh",
+      "district": "Ghaziabad",
+      "latitude": 28.6692,
+      "longitude": 77.4538,
+      "phone": "9876543230",
+      "address": "Ghaziabad, UP"
+    },
+    {
+      "id": "fru_uttarpradesh_001",
+      "name": "District Hospital Ghaziabad",
+      "type": "FRU",
+      "state": "Uttar Pradesh",
+      "district": "Ghaziabad",
+      "latitude": 28.6739,
+      "longitude": 77.4560,
+      "phone": "9876543231",
+      "address": "Ghaziabad, UP"
+    },
+    {
+      "id": "phc_tamilnadu_001",
+      "name": "PHC Tambaram",
+      "type": "PHC",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "latitude": 12.9140,
+      "longitude": 80.2669,
+      "phone": "9876543240",
+      "address": "Tambaram, Chennai"
+    },
+    {
+      "id": "fru_tamilnadu_001",
+      "name": "Government Hospital Tambaram",
+      "type": "FRU",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "latitude": 12.9200,
+      "longitude": 80.2800,
+      "phone": "9876543241",
+      "address": "Tambaram, Chennai"
+    },
+    {
+      "id": "phc_westbengal_001",
+      "name": "PHC Kolkata",
+      "type": "PHC",
+      "state": "West Bengal",
+      "district": "Kolkata",
+      "latitude": 22.5726,
+      "longitude": 88.3639,
+      "phone": "9876543250",
+      "address": "Kolkata, West Bengal"
+    },
+    {
+      "id": "fru_westbengal_001",
+      "name": "Medical College Hospital",
+      "type": "FRU",
+      "state": "West Bengal",
+      "district": "Kolkata",
+      "latitude": 22.5687,
+      "longitude": 88.3697,
+      "phone": "9876543251",
+      "address": "Kolkata, West Bengal"
+    },
+    {
+      "id": "phc_bihar_001",
+      "name": "PHC Patna",
+      "type": "PHC",
+      "state": "Bihar",
+      "district": "Patna",
+      "latitude": 25.5941,
+      "longitude": 85.1376,
+      "phone": "9876543260",
+      "address": "Patna, Bihar"
+    },
+    {
+      "id": "fru_bihar_001",
+      "name": "Nalanda Medical College & Hospital",
+      "type": "FRU",
+      "state": "Bihar",
+      "district": "Nalanda",
+      "latitude": 25.1401,
+      "longitude": 85.4876,
+      "phone": "9876543261",
+      "address": "Nalanda, Bihar"
+    },
+    {
+      "id": "phc_rajasthan_001",
+      "name": "PHC Jaipur",
+      "type": "PHC",
+      "state": "Rajasthan",
+      "district": "Jaipur",
+      "latitude": 26.9124,
+      "longitude": 75.7873,
+      "phone": "9876543270",
+      "address": "Jaipur, Rajasthan"
+    },
+    {
+      "id": "fru_rajasthan_001",
+      "name": "Government Medical College Jaipur",
+      "type": "FRU",
+      "state": "Rajasthan",
+      "district": "Jaipur",
+      "latitude": 26.9125,
+      "longitude": 75.7874,
+      "phone": "9876543271",
+      "address": "Jaipur, Rajasthan"
+    },
+    {
+      "id": "phc_madhyapradesh_001",
+      "name": "PHC Indore",
+      "type": "PHC",
+      "state": "Madhya Pradesh",
+      "district": "Indore",
+      "latitude": 22.7196,
+      "longitude": 75.8577,
+      "phone": "9876543280",
+      "address": "Indore, Madhya Pradesh"
+    },
+    {
+      "id": "fru_madhyapradesh_001",
+      "name": "District Hospital Indore",
+      "type": "FRU",
+      "state": "Madhya Pradesh",
+      "district": "Indore",
+      "latitude": 22.7400,
+      "longitude": 75.8700,
+      "phone": "9876543281",
+      "address": "Indore, Madhya Pradesh"
+    },
+    {
+      "id": "phc_telangana_001",
+      "name": "PHC Hyderabad",
+      "type": "PHC",
+      "state": "Telangana",
+      "district": "Hyderabad",
+      "latitude": 17.3850,
+      "longitude": 78.4867,
+      "phone": "9876543290",
+      "address": "Hyderabad, Telangana"
+    },
+    {
+      "id": "fru_telangana_001",
+      "name": "Osmania General Hospital",
+      "type": "FRU",
+      "state": "Telangana",
+      "district": "Hyderabad",
+      "latitude": 17.3860,
+      "longitude": 78.4880,
+      "phone": "9876543291",
+      "address": "Hyderabad, Telangana"
+    }
+  ],
+  "emergency_services": {
+    "ambulance_108": "108",
+    "ambulance_name": "108 Ambulance Service",
+    "ambulance_available": "24/7 in all states",
+    "jssk_coverage": "Free transport for pregnant women under JSSK"
+  },
+  "notes": "This is a simplified master list. In production, integrate with real HMIS (Health Management Information System) or MoHFW APIs for up-to-date facility status and real-time data. Each state may have variations."
+}

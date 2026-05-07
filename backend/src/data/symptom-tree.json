@@ -1,0 +1,93 @@
+{
+  "fever": {
+    "description": "Elevated body temperature",
+    "rules": [
+      {
+        "condition": "duration_days > 3",
+        "action": "refer_doctor",
+        "advice": "Fever lasting more than 3 days requires immediate medical attention. Refer to the nearest PHC.",
+        "urgency": "high"
+      },
+      {
+        "condition": "duration_days > 1",
+        "action": "monitor_closely",
+        "advice": "Give paracetamol, ensure hydration. If fever persists beyond 3 days, refer to doctor.",
+        "urgency": "medium"
+      },
+      {
+        "condition": "default",
+        "action": "home_care",
+        "advice": "Rest, plenty of fluids, paracetamol as needed. Monitor temperature every 4-6 hours.",
+        "urgency": "low"
+      }
+    ]
+  },
+  "diarrhea": {
+    "description": "Loose or watery stools",
+    "rules": [
+      {
+        "condition": "duration_days > 2",
+        "action": "refer_doctor",
+        "advice": "Diarrhea for more than 2 days, especially with blood or dehydration, requires urgent medical care.",
+        "urgency": "high"
+      },
+      {
+        "condition": "default",
+        "action": "home_care",
+        "advice": "Give ORS (Oral Rehydration Solution). Zinc tablets for children. Avoid spicy food. If blood in stool, go to PHC immediately.",
+        "urgency": "medium"
+      }
+    ]
+  },
+  "cold": {
+    "description": "Common cold / runny nose",
+    "rules": [
+      {
+        "condition": "duration_days > 7",
+        "action": "refer_doctor",
+        "advice": "Cold lasting more than a week may indicate a secondary infection. Refer to PHC.",
+        "urgency": "medium"
+      },
+      {
+        "condition": "default",
+        "action": "home_care",
+        "advice": "Rest, warm fluids, steam inhalation. Avoid cold water. Use saline nasal drops if needed.",
+        "urgency": "low"
+      }
+    ]
+  },
+  "skin_rash": {
+    "description": "Skin rash or discolouration",
+    "rules": [
+      {
+        "condition": "spreading_rapidly",
+        "action": "refer_doctor",
+        "advice": "Rapidly spreading rash or rash with fever requires immediate medical evaluation.",
+        "urgency": "high"
+      },
+      {
+        "condition": "default",
+        "action": "monitor_closely",
+        "advice": "Keep the area clean and dry. Avoid scratching. Do not apply unknown creams. If rash spreads or painful, go to PHC.",
+        "urgency": "medium"
+      }
+    ]
+  },
+  "vomiting": {
+    "description": "Nausea and vomiting",
+    "rules": [
+      {
+        "condition": "duration_days > 1",
+        "action": "refer_doctor",
+        "advice": "Persistent vomiting causes dehydration. Seek medical help especially for children and pregnant women.",
+        "urgency": "high"
+      },
+      {
+        "condition": "default",
+        "action": "home_care",
+        "advice": "Small sips of water or ORS. Avoid solid food for 2-4 hours. Rest. If not improving in 24 hours, visit PHC.",
+        "urgency": "low"
+      }
+    ]
+  }
+}

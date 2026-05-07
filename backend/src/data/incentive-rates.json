@@ -1,0 +1,154 @@
+{
+  "version": "april_2024",
+  "currency": "INR",
+  "tasks": [
+    {
+      "id": "mobilization_for_immunization",
+      "category": "immunization",
+      "description": "Mobilization for immunization",
+      "amount": 100,
+      "hindi_description": "टीकाकरण के लिए गतिविधि"
+    },
+    {
+      "id": "immunization_follow_up",
+      "category": "immunization",
+      "description": "Immunization follow-up and completion",
+      "amount": 50,
+      "hindi_description": "टीकाकरण अनुवर्ती और पूर्णता"
+    },
+    {
+      "id": "immunization_mop_up",
+      "category": "immunization",
+      "description": "Immunization mop-up campaign",
+      "amount": 50,
+      "hindi_description": "टीकाकरण मॉप-अप अभियान"
+    },
+    {
+      "id": "nutrition_counseling",
+      "category": "nutrition",
+      "description": "Nutrition counseling and dietary support",
+      "amount": 100,
+      "hindi_description": "पोषण परामर्श और आहार समर्थन"
+    },
+    {
+      "id": "ifa_distribution",
+      "category": "nutrition",
+      "description": "Distribution of IFA (Iron-Folic Acid) tablets",
+      "amount": 50,
+      "hindi_description": "IFA (आयरन-फोलिक एसिड) गोलियों का वितरण"
+    },
+    {
+      "id": "household_survey",
+      "category": "maternal",
+      "description": "Household survey and pregnancy identification",
+      "amount": 200,
+      "hindi_description": "घरेलू सर्वेक्षण और गर्भावस्था की पहचान"
+    },
+    {
+      "id": "anc_mobilization",
+      "category": "maternal",
+      "description": "Mobilization for and accompaniment to ANC checkup",
+      "amount": 600,
+      "hindi_description": "ANC जांच के लिए गतिविधि और साथ"
+    },
+    {
+      "id": "safe_delivery",
+      "category": "maternal",
+      "description": "Mobilization for safe institutional delivery and escort",
+      "amount": 600,
+      "hindi_description": "सुरक्षित संस्थागत प्रसव और साथ के लिए गतिविधि"
+    },
+    {
+      "id": "pnc_mobilization",
+      "category": "maternal",
+      "description": "Post-natal care mobilization and accompaniment",
+      "amount": 200,
+      "hindi_description": "प्रसवोत्तर देखभाल गतिविधि और साथ"
+    },
+    {
+      "id": "family_planning_counseling",
+      "category": "family_planning",
+      "description": "Family planning counseling and mobilization",
+      "amount": 50,
+      "hindi_description": "परिवार नियोजन परामर्श और गतिविधि"
+    },
+    {
+      "id": "family_planning_follow_up",
+      "category": "family_planning",
+      "description": "Family planning follow-up and continuation",
+      "amount": 50,
+      "hindi_description": "परिवार नियोजन अनुवर्ती और जारी रखना"
+    },
+    {
+      "id": "sanitation_promotion",
+      "category": "nutrition",
+      "description": "Promotion of sanitation and hygiene",
+      "amount": 100,
+      "hindi_description": "स्वच्छता और स्वास्थ्य विज्ञान का प्रचार"
+    },
+    {
+      "id": "community_mobilization",
+      "category": "general",
+      "description": "Community mobilization and health education",
+      "amount": 100,
+      "hindi_description": "सामुदायिक गतिविधि और स्वास्थ्य शिक्षा"
+    },
+    {
+      "id": "data_entry",
+      "category": "reporting",
+      "description": "Data entry and submission for RCH/HMIS",
+      "amount": 50,
+      "hindi_description": "RCH/HMIS के लिए डेटा प्रविष्टि और सबमिशन"
+    },
+    {
+      "id": "camp_organization",
+      "category": "general",
+      "description": "Organization of health camps and drives",
+      "amount": 200,
+      "hindi_description": "स्वास्थ्य शिविर और अभियान आयोजन"
+    },
+    {
+      "id": "tb_case_finding",
+      "category": "disease_control",
+      "description": "TB case finding and follow-up",
+      "amount": 200,
+      "hindi_description": "TB केस खोज और अनुवर्ती"
+    },
+    {
+      "id": "tb_treatment_support",
+      "category": "disease_control",
+      "description": "TB treatment support and adherence",
+      "amount": 100,
+      "hindi_description": "TB उपचार समर्थन और पालन"
+    },
+    {
+      "id": "dengue_surveillance",
+      "category": "disease_control",
+      "description": "Dengue/Disease surveillance and reporting",
+      "amount": 50,
+      "hindi_description": "डेंगू/रोग निगरानी और रिपोर्टिंग"
+    },
+    {
+      "id": "covid_vaccination",
+      "category": "immunization",
+      "description": "COVID-19 vaccination mobilization",
+      "amount": 100,
+      "hindi_description": "COVID-19 टीकाकरण गतिविधि"
+    },
+    {
+      "id": "jssk_awareness",
+      "category": "maternal",
+      "description": "JSSK (Janani Suraksha Yojana) awareness and promotion",
+      "amount": 50,
+      "hindi_description": "JSSK जागरूकता और प्रचार"
+    },
+    {
+      "id": "bonus_performance",
+      "category": "bonus",
+      "description": "Performance bonus (quarterly/annual)",
+      "amount": 5000,
+      "hindi_description": "प्रदर्शन बोनस (त्रैमासिक/वार्षिक)"
+    }
+  ],
+  "notes": "Rates as per April 2024 NRHM guidelines. Task amounts can be adjusted based on state variations. Bonus is awarded for performance metrics achieving >80% targets."
+}

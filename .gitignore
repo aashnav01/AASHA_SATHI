@@ -1,0 +1,9 @@
+# Root .gitignore
+.env
+*.zip
+*.log
+node_modules/
+dist/
+build/
+.DS_Store
+Thumbs.db
