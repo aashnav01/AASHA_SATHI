@@ -6,6 +6,7 @@ import { useTextToSpeech } from '../hooks/useTextToSpeech';
 import { useTranslation } from 'react-i18next';
 import { Mic, Volume2, ChevronLeft, Zap, Bot, Loader2, Info } from 'lucide-react';
 import { getPpdGuidance, type PpdAnalysisResult } from '../services/api';
+import { VoiceOptionsHint } from '../components/VoiceOptionsHint';
 
 const OPTIONS_BASE = [
   { value: 0, key: '0', voiceTokens: ['never', 'no', 'zero', 'कभी नहीं', 'नहीं'] },
@@ -44,9 +45,8 @@ export const PPDScreening: React.FC = () => {
 
   const readQuestion = useCallback((idx: number) => {
     stopSpeak();
-    const optionsText = OPTIONS_BASE.map(o => t(`ppd.options.${o.key}`)).join('. ');
     speak(
-      `${t('ppd.question_x_of_10', { current: idx + 1 })}. ${questions[idx]}. ${optionsText}.`,
+      `${t('ppd.question_x_of_10', { current: idx + 1 })}. ${questions[idx]}.`,
       () => listen()
     );
   }, [speak, stopSpeak, listen, questions, t]);
@@ -350,6 +350,12 @@ export const PPDScreening: React.FC = () => {
 
         {/* Options */}
         <div className="space-y-3">
+          <VoiceOptionsHint 
+            onReadOptions={() => {
+              const optionsText = OPTIONS_BASE.map(o => t(`ppd.options.${o.key}`)).join('. ');
+              speak(optionsText, () => listen());
+            }} 
+          />
           {OPTIONS_BASE.map((opt, oi) => (
             <button
               key={opt.value}

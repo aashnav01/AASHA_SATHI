@@ -61,13 +61,22 @@ Rules:
 
     const chatCompletion = await groq.chat.completions.create({
       messages: [{ role: 'user', content: prompt }],
-      model: 'llama-3.1-8b-instant',
+      model: 'llama-3.3-70b-versatile',
       temperature: 0.3, // low temperature for clinical reliability 
       max_tokens: 1024,
     });
 
     const responseContent = chatCompletion.choices[0]?.message?.content || "{}";
-    const cleanJson = responseContent.trim().replace(/^```json/i, '').replace(/```$/i, '').trim();
+    
+    // Robust JSON extraction
+    let cleanJson = responseContent.trim();
+    const firstBrace = cleanJson.indexOf('{');
+    const lastBrace = cleanJson.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace !== -1) {
+      cleanJson = cleanJson.substring(firstBrace, lastBrace + 1);
+    } else {
+      cleanJson = cleanJson.replace(/^```json/i, '').replace(/```$/i, '').trim();
+    }
 
     const output = JSON.parse(cleanJson);
     return res.json(output);

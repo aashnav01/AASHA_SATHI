@@ -53,46 +53,38 @@ export const PanicFAB: React.FC = () => {
   return (
     <>
       {/* Emergency features stack */}
-      <div className="fixed bottom-40 right-4 z-50 flex flex-col gap-2">
+      <div className="fixed bottom-[76px] right-3 z-50 flex flex-col gap-2">
         {/* Referral shortcut */}
         <button
           id="referral-link"
           onClick={() => navigate('/referral')}
-          className="flex items-center gap-1.5 px-3 py-2 rounded-full hover:scale-105 active:scale-95 transition-all text-xs font-semibold"
-          style={{ background: 'rgba(232,160,180,0.15)', border: '1px solid rgba(166,61,87,0.25)', color: '#A63D57' }}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:scale-105 active:scale-95 transition-all text-xs font-semibold shadow-md"
+          style={{ background: 'white', border: '1px solid rgba(166,61,87,0.25)', color: '#A63D57' }}
         >
           {t('panic.referral_link', 'Referral')}
           <ArrowRight size={12} />
         </button>
 
-        {/* FAB with slow alive pulse */}
-        <div className="relative">
-          {!loading && (
-            <>
-              <div className="panic-pulse-ring" />
-              <div className="panic-pulse-ring-2" />
-            </>
+        {/* SOS FAB — no pulse, clean corner */}
+        <button
+          id="panic-fab-btn"
+          onClick={handleOpen}
+          disabled={loading}
+          className="w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-90"
+          style={{
+            background: loading
+              ? 'linear-gradient(135deg, #d4829a, #c06070)'
+              : 'linear-gradient(135deg, #A63D57, #7C2238)',
+            boxShadow: loading ? 'none' : '0 6px 24px rgba(166,61,87,0.5)',
+          }}
+          aria-label={t('panic.title')}
+        >
+          {loading ? (
+            <div className="w-5 h-5 border-white border-t-transparent rounded-full animate-spin" style={{ borderWidth: 3 }} />
+          ) : (
+            <AlertOctagon size={24} className="text-white" />
           )}
-          <button
-            id="panic-fab-btn"
-            onClick={handleOpen}
-            disabled={loading}
-            className="relative w-16 h-16 rounded-full shadow-2xl flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95"
-            style={{
-              background: loading
-                ? 'linear-gradient(135deg, #d4829a, #c06070)'
-                : 'linear-gradient(135deg, #A63D57, #7C2238)',
-              boxShadow: loading ? 'none' : '0 8px 30px rgba(166,61,87,0.45)',
-            }}
-            aria-label={t('panic.title')}
-          >
-            {loading ? (
-              <div className="w-6 h-6 border-white border-t-transparent rounded-full animate-spin" style={{ borderWidth: 3 }} />
-            ) : (
-              <AlertOctagon size={28} className="text-white" />
-            )}
-          </button>
-        </div>
+        </button>
       </div>
 
       {/* Confirm Modal */}
