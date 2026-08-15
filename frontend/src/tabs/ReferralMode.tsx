@@ -7,7 +7,7 @@ import {
   MessageCircle, CheckSquare, Square, Navigation, AlertCircle
 } from 'lucide-react';
 import { db, makeClientId } from '../db/offlineDb';
-import axios from 'axios';
+import { API } from '../services/api';
 import schemes from '../data/schemes.json';
 import facilities from '../data/facilities.json';
 
@@ -21,7 +21,6 @@ interface Facility {
   longitude: number;
 }
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 const JSSK_BENEFITS = "Under JSSK, transport is FREE for pregnant women. Tell the mother: 'JSSK provides free transport. Use 108 ambulance or JSSK transport service. Don't spend your money.'";
 
 // Utility function to get unique states and districts
@@ -175,7 +174,7 @@ export const ReferralMode: React.FC = () => {
     setIsLoadingFacilities(true);
     try {
       // Try API first
-      const response = await axios.get(`${API_URL}/referral/facilities?type=FRU`);
+      const response = await API.get('/referral/facilities?type=FRU');
       if (response.data.success) {
         const filtered = response.data.facilities.filter((f: Facility & { district?: string }) => 
           !selectedDistrict || f.district === selectedDistrict
@@ -293,7 +292,7 @@ export const ReferralMode: React.FC = () => {
 
       // Try to sync immediately if online
       try {
-        await axios.post(`${API_URL}/referral/log`, {
+        await API.post('/referral/log', {
           asha_id: ashaId,
           ...referral,
         });

@@ -2,8 +2,11 @@ import axios from 'axios';
 
 const AUTH_STORAGE_KEY = 'asha_sathi_auth';
 
-const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:8000/api',
+export const API = axios.create({
+  // Relative by default: the API is served from the same origin as the app,
+  // so no build-time URL is needed. VITE_API_URL only matters if the frontend
+  // is ever hosted separately from the API.
+  baseURL: import.meta.env.VITE_API_URL ?? '/api',
   headers: { 'Content-Type': 'application/json' },
 });
 
