@@ -37,3 +37,7 @@ services:
         sync: false
       # ALLOWED_ORIGIN and VITE_API_URL are deliberately absent: same origin
       # needs neither. Set them only if you later split the frontend out.
+      #
+      # To create a demo account without shell access, set SEED_ON_START=true
+      # plus SEED_MOBILE and SEED_PIN in the dashboard, deploy, then unset
+      # SEED_ON_START. It only runs against an empty database.

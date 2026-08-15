@@ -7,6 +7,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { connectDB } from './db';
+import { maybeSeedOnStart } from './bootstrapSeed';
 
 // Routes
 import authRouter from './routes/auth';
@@ -132,6 +133,7 @@ async function start() {
     process.exit(1);
   }
   await connectDB();
+  await maybeSeedOnStart();
   app.listen(PORT, () => {
     console.log(`[server] ASHA Sathi API running on port ${PORT}`);
     console.log(
