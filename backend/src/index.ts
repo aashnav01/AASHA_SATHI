@@ -41,12 +41,14 @@ app.use(
       directives: {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
+        // The Outfit webfont is pulled in by an @import in index.css; Google
+        // serves the stylesheet from one host and the font files from another.
+        styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
         imgSrc: ["'self'", 'data:', 'blob:', 'https://img.youtube.com', 'https://i.ytimg.com'],
         mediaSrc: ["'self'", 'data:', 'blob:'],
         frameSrc: ['https://www.youtube.com', 'https://www.youtube-nocookie.com'],
         connectSrc: ["'self'"],
-        fontSrc: ["'self'", 'data:'],
+        fontSrc: ["'self'", 'data:', 'https://fonts.gstatic.com'],
         objectSrc: ["'none'"],
         baseUri: ["'self'"],
         formAction: ["'self'"],
