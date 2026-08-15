@@ -13,7 +13,20 @@
 [![Node.js](https://img.shields.io/badge/Node.js-43853D?style=flat&logo=node.js&logoColor=white)](https://nodejs.org)
 [![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=flat&logo=mongodb&logoColor=white)](https://mongodb.com)
 
+### 🔗 [**Open the live app → asha-sathi.onrender.com**](https://asha-sathi.onrender.com/)
+
+**Demo login** — mobile `9876543210` · PIN `1234`
+
+*Or tap "नई आशा कार्यकर्ता? खाता बनाएं" on the login screen to register your own account.*
+
 </div>
+
+> [!NOTE]
+> The demo runs on Render's free tier. If it has been idle a while the first
+> request wakes the instance and can take up to a minute — later requests are fast.
+>
+> The demo account is public and shared. Treat anything entered there as visible
+> to others, and register a private account before recording anything real.
 
 ---
 
@@ -136,7 +149,12 @@ Offline-first synchronisation engine.
 | Hindi    | `hi` | 100% |
 | Telugu   | `te` | 100% |
 
-Language cycles **EN → हिं → తె → EN** via the globe icon in the top bar. Preference is persisted across sessions via `localStorage`.
+Language can be chosen **before signing in** — the login screen shows all three
+options at once, each written in its own script, so a worker who does not read the
+current language can still find hers.
+
+Once inside, the globe icon in the top bar cycles **EN → हिं → తె → EN**.
+The preference persists across sessions via `localStorage`.
 
 ---
 
@@ -174,7 +192,9 @@ AASHA_SATHI/
 ├── frontend/               # React + TypeScript PWA (Vite)
 │   ├── src/
 │   │   ├── tabs/           # Feature screens (12 tabs)
-│   │   ├── components/     # Shared UI (Card, TabBar, TopBar, SaveToast, PanicFAB)
+│   │   ├── auth/           # AuthScreen — login / register
+│   │   ├── context/        # AuthContext — session + token storage
+│   │   ├── components/     # Shared UI (Card, TabBar, TopBar, LanguageSelector, PanicFAB)
 │   │   ├── hooks/          # useTextToSpeech, useVoiceRecognition, useCountUp, useOnlineStatus
 │   │   ├── db/             # Dexie.js offline database (offlineDb.ts)
 │   │   ├── services/       # API client (api.ts) + sync payload types
@@ -184,8 +204,11 @@ AASHA_SATHI/
 │
 └── backend/                # Express + TypeScript REST API
     ├── src/
-    │   ├── routes/         # /anemia, /ppd, /referral, /sync, /incentive, /symptom, etc.
+    │   ├── routes/         # /auth, /asha, /referral, /sync, /incentive, /symptom-check, etc.
     │   ├── models/         # Mongoose schemas (AnemiaRecord, PPDRecord, Referral, ...)
+    │   ├── middleware/     # requireAuth / requireRole — JWT verification
+    │   ├── seedData.ts     # Demo account + sample tasks, shared by both seed paths
+    │   ├── bootstrapSeed.ts# Opt-in seeding at startup (SEED_ON_START)
     │   └── data/           # symptom-tree.json, incentive-rates.json
     └── .env                # GROQ_API_KEY, MONGODB_URI, JWT_SECRET (not committed)
 ```
@@ -239,44 +262,141 @@ npm run dev
 # Opens at http://localhost:5173
 ```
 
+### First login
+
+Register from the login screen, or seed a demo account with sample tasks:
+
+```bash
+cd backend
+npm run seed          # creates 9876543210 / PIN 1234 and four sample tasks
+```
+
+The seed is idempotent, so it is safe to re-run. Override the credentials with
+`SEED_NAME`, `SEED_MOBILE` and `SEED_PIN` if you prefer your own.
+
 ### Environment Variables
 
-**`backend/.env`**
+**`backend/.env`** — see `backend/.env.example` for the annotated full list.
 ```env
 PORT=8000
-MONGODB_URI=mongodb://localhost:27017/asha_sathi
-GROQ_API_KEY=your_groq_api_key_here
-JWT_SECRET=your_jwt_secret_here
+MONGODB_URI=mongodb://localhost:27017     # database name is set separately
+MONGODB_DB_NAME=asha_sathi                # optional, defaults to asha_sathi
+JWT_SECRET=                               # required — openssl rand -hex 32
+GROQ_API_KEY=                             # https://console.groq.com
+
+# Optional. Without these the panic button logs to the console instead of texting.
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_PHONE_NUMBER=
+
+# Optional. Only needed if the frontend is hosted separately from the API;
+# a single-service deployment is same-origin and needs no CORS allow-list.
+ALLOWED_ORIGIN=
 ```
+
+**`frontend/.env`** — optional. The app calls `/api` relatively, which works both
+in production (same origin) and in development (Vite proxies `/api` to port 8000).
+Set `VITE_API_URL` only if you host the frontend apart from the API.
+
+---
+
+## ☁️ Deployment (Render)
+
+The app deploys as a **single service**: Express serves the built React app and the
+API from one origin. That removes the need for a CORS allow-list and a build-time
+API URL, and leaves only one instance to cold-start on the free plan.
+
+`render.yaml` describes the service. Note that a Blueprint is only read when the
+service is *created* from it — a service made through the dashboard uses the
+settings stored there instead.
+
+| Setting | Value |
+|---------|-------|
+| Build command | `cd frontend && npm ci && npm run build && cd ../backend && npm ci && npm run build` |
+| Start command | `cd backend && npm start` |
+| Health check path | `/api/health` |
+
+Set `MONGODB_URI`, `JWT_SECRET` and `GROQ_API_KEY` in the dashboard — never in the
+repository. Add `0.0.0.0/0` under Atlas → Network Access, since Render's outbound
+IPs are not fixed on the free plan.
+
+Both packages ship an `.npmrc` containing `include=dev`. Hosts set
+`NODE_ENV=production`, which makes npm skip `devDependencies` — and the build tools
+(Vite, TypeScript, `@types/node`) all live there, so the build fails without it.
+
+### Seeding a host with no shell
+
+A free Render instance cannot run `npm run seed`. To create a demo account during
+startup instead, set `SEED_ON_START=true` along with `SEED_MOBILE` and `SEED_PIN`,
+deploy once, then remove `SEED_ON_START`. It runs only when the database has no
+users, so it cannot overwrite real data, and there is no default credential.
 
 ---
 
 ## 🔌 API Endpoints
 
+All routes are under `/api`. Everything except `/health`, `/auth/*`, `/education`,
+`/symptom-check`, `/pregnancy-risk` and the referral lookups requires a
+`Authorization: Bearer <token>` header.
+
+#### Auth
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/anemia/record` | Save anemia screening |
-| POST | `/api/ppd/screen` | Save EPDS screening |
-| POST | `/api/referral/log` | Log emergency referral |
-| POST | `/api/incentive/log` | Log completed task |
-| GET  | `/api/incentive/earnings` | Get earnings summary |
+| POST | `/api/auth/register` | Create an account (name, mobile, PIN) |
+| POST | `/api/auth/login` | Log in, returns a JWT |
+| GET  | `/api/auth/me` | Current profile — restores a stored session |
+
+#### ASHA
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET   | `/api/asha/tasks` | List tasks (`?show_completed=true` to include done) |
+| POST  | `/api/asha/tasks` | Create a task |
+| PATCH | `/api/asha/tasks/:id` | Mark a task complete |
+| POST  | `/api/asha/panic` | Send the SOS alert (SMS via Twilio) |
+
+#### Clinical tools
+| Method | Endpoint | Description |
+|--------|----------|-------------|
 | POST | `/api/symptom-check` | AI symptom triage |
-| POST | `/api/pregnancy-risk` | Risk assessment |
-| GET  | `/api/education/modules` | Fetch learning modules |
-| POST | `/api/sync` | Bulk offline sync (7 types) |
-| POST | `/api/panic` | Send SOS alert |
+| POST | `/api/pregnancy-risk` | Pregnancy risk assessment |
+| POST | `/api/ppd-analysis` | AI counselling guidance for an EPDS score |
+| GET  | `/api/education` | Learning modules |
+
+#### Referral & incentives
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET  | `/api/referral/facilities` | Nearby facilities (`?type=FRU`) |
+| GET  | `/api/referral/facility/:id` | Facility detail |
+| GET  | `/api/referral/emergency` | Emergency contact numbers |
+| POST | `/api/referral/log` | Log an emergency referral |
+| POST | `/api/incentive/log` | Log a completed task |
+| GET  | `/api/incentive/earnings` | Earnings summary |
+| GET  | `/api/incentive/rates` | NHM rate card |
+| POST | `/api/incentive/dispute` | Flag a delayed payment |
+
+#### Supervisor & system
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET  | `/api/supervisor/ashas` | ASHAs under this supervisor |
+| GET  | `/api/supervisor/alerts` | Panic alerts received |
+| GET  | `/api/supervisor/charts-data` | Aggregated chart data |
+| POST | `/api/sync` | Bulk offline sync (7 record types) |
 | GET  | `/api/health` | Health check |
 
 ---
 
 ## 🛡️ Production Checklist
 
-- [ ] Replace `mongodb://localhost:27017` with MongoDB Atlas URI
-- [ ] Rotate `JWT_SECRET` to a strong random value
-- [ ] Store `GROQ_API_KEY` in environment secrets (not `.env` file)
-- [ ] Enable HTTPS (required for GPS + service worker)
-- [ ] Set up a reverse proxy (nginx/Caddy) in front of the Express server
-- [ ] Configure CORS origins to your deployed frontend domain
+- [ ] Point `MONGODB_URI` at MongoDB Atlas, and allow the host in Atlas → Network Access
+- [ ] Set `JWT_SECRET` to a strong random value (`openssl rand -hex 32`)
+- [ ] Store `GROQ_API_KEY` in the host's environment secrets, never in a committed file
+- [ ] Serve over HTTPS — required for GPS and the service worker
+- [ ] Delete or rotate any seeded demo account before real patient data is entered
+- [ ] Leave `ALLOWED_ORIGIN` unset for a single-service deployment; set it only if
+      the frontend is hosted separately
+
+A reverse proxy is not required — Express serves the built frontend directly, and
+Render terminates TLS in front of it.
 
 ---
 
@@ -297,7 +417,7 @@ ASHA Sathi was designed in response to findings from **2024–25 field research*
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend framework | React 18 + TypeScript |
+| Frontend framework | React 19 + TypeScript |
 | Build tool | Vite |
 | Styling | Tailwind CSS (custom design system) |
 | Offline database | Dexie.js (IndexedDB wrapper) |
