@@ -336,11 +336,14 @@ export const SymptomChecker: React.FC = () => {
               const tKey = `symptom.common_list.${s.toLowerCase()}`;
               const label = t(tKey) !== tKey ? t(tKey) : s;
               return (
-                <button
+                <div
                   key={s}
                   id={`symp-chip-${s.toLowerCase()}`}
+                  role="button"
+                  tabIndex={0}
                   onClick={() => toggleSymptom(s)}
-                  className="flex flex-col items-center gap-1 p-3 rounded-2xl border-2 transition-all active:scale-95"
+                  onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleSymptom(s); } }}
+                  className="flex flex-col items-center gap-1 p-3 rounded-2xl border-2 transition-all active:scale-95 cursor-pointer"
                   style={{
                     borderColor: selected ? color : '#e5e7eb',
                     background: selected ? `${color}18` : 'rgba(255,255,255,0.6)',
@@ -357,7 +360,7 @@ export const SymptomChecker: React.FC = () => {
                   >
                     <Volume2 size={12} />
                   </button>
-                </button>
+                </div>
               );
             })}
           </div>

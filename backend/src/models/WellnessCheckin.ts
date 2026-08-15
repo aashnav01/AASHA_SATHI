@@ -20,7 +20,7 @@ const WellnessCheckinSchema = new Schema<IWellnessCheckin>({
   supervisor_support: { type: Number, required: true, min: 0, max: 3 },
   completed_visits: { type: Number, required: true, min: 0, max: 3 },
   overall_score: { type: Number, default: 0 },
-  clientId: { type: String, sparse: true },
+  clientId: { type: String },
   timestamp: { type: Date, default: () => new Date() },
 }, { timestamps: false });
 

@@ -8,6 +8,20 @@ const LANG_MAP: Record<string, string> = {
   te: 'te-IN',
 };
 
+// Picks the best available voice for the target language. Many devices (most
+// Windows browsers without extra language packs) have zero hi-IN/te-IN voices
+// installed, so this falls back through progressively looser matches.
+function pickVoice(voices: SpeechSynthesisVoice[], i18nLang: string, targetLang: string) {
+  return (
+    voices.find(v => v.lang === targetLang) ||
+    voices.find(v => v.lang.toLowerCase().startsWith(i18nLang)) ||
+    voices.find(v => v.lang.includes('IN')) ||
+    voices.find(v => v.default) ||
+    voices[0] ||
+    null
+  );
+}
+
 export function useTextToSpeech() {
   const { i18n } = useTranslation();
 
@@ -17,37 +31,37 @@ export function useTextToSpeech() {
 
     const utterance = new SpeechSynthesisUtterance(text);
     const targetLang = LANG_MAP[i18n.language] ?? 'en-IN';
-    utterance.lang = targetLang;
 
     // Rate: slightly slower for Hindi/Telugu for clarity
     utterance.rate = i18n.language === 'en' ? 1.0 : 0.92;
     utterance.pitch = 1.0;
 
-    // Voice selection: try exact match → language prefix match → any Indian English
-    const voices = window.speechSynthesis.getVoices();
-    const voice =
-      voices.find(v => v.lang === targetLang) ||
-      voices.find(v => v.lang.startsWith(i18n.language)) ||
-      voices.find(v => v.lang.startsWith(targetLang.split('-')[0])) ||
-      voices.find(v => v.lang.includes('IN')) ||
-      null;
-
-    if (voice) utterance.voice = voice;
+    const applyVoice = (voices: SpeechSynthesisVoice[]) => {
+      const voice = pickVoice(voices, i18n.language, targetLang);
+      if (voice) {
+        utterance.voice = voice;
+        // Tag the utterance with the VOICE's own language, not the desired
+        // one — a mismatched voice/lang pair (e.g. an en-IN voice tagged
+        // hi-IN) makes some engines (notably Windows SAPI) speak nothing at
+        // all. Matching them guarantees audio plays, even if the closest
+        // available voice can only approximate the target language.
+        utterance.lang = voice.lang;
+      } else {
+        utterance.lang = targetLang;
+      }
+    };
 
     if (onEnd) utterance.onend = onEnd;
 
-    // Chrome bug: voices may not be ready — retry if empty
+    // Chrome bug: voices may not be ready on first call — retry once loaded.
+    const voices = window.speechSynthesis.getVoices();
     if (voices.length === 0) {
       window.speechSynthesis.onvoiceschanged = () => {
-        const freshVoices = window.speechSynthesis.getVoices();
-        const freshVoice =
-          freshVoices.find(v => v.lang === targetLang) ||
-          freshVoices.find(v => v.lang.startsWith(i18n.language)) ||
-          null;
-        if (freshVoice) utterance.voice = freshVoice;
+        applyVoice(window.speechSynthesis.getVoices());
         window.speechSynthesis.speak(utterance);
       };
     } else {
+      applyVoice(voices);
       window.speechSynthesis.speak(utterance);
     }
   }, [i18n.language]);

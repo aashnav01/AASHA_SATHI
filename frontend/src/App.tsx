@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { Layout } from './components/Layout';
+import { AuthScreen } from './auth/AuthScreen';
+import { useAuth } from './context/AuthContext';
 import { WorkloadManager } from './tabs/WorkloadManager';
 import { AnemiaTracker } from './tabs/AnemiaTracker';
 import { PPDScreening } from './tabs/PPDScreening';
@@ -15,6 +17,12 @@ import { WellnessCheckin } from './tabs/WellnessCheckin';
 import { ReferralMode } from './tabs/ReferralMode';
 
 function App() {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <AuthScreen />;
+  }
+
   return (
     <BrowserRouter>
       <Routes>

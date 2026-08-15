@@ -16,7 +16,7 @@ const AnemiaRecordSchema = new Schema<IAnemiaRecord>({
   foods_consumed: [{ type: String }],
   advice_given: { type: String, required: true },
   timestamp: { type: Date, default: () => new Date() },
-  clientId: { type: String, index: true, sparse: true },
+  clientId: { type: String },
 }, { timestamps: false });
 
 AnemiaRecordSchema.index({ asha_id: 1 });

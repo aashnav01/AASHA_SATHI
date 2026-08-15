@@ -7,9 +7,10 @@ import { Referral } from '../models/Referral';
 import { IncentiveLog } from '../models/IncentiveLog';
 import { WellnessCheckin } from '../models/WellnessCheckin';
 import { TaskCompletion } from '../models/TaskCompletion';
-import { TEST_ASHA_ID } from './asha';
+import { requireAuth } from '../middleware/auth';
 
 const router = Router();
+router.use(requireAuth);
 
 // ─── POST /api/sync ────────────────────────────────────────────────────────────
 // Accepts batches of anemia, ppd, alerts, referrals, incentives, wellness, taskCompletions.
@@ -26,7 +27,7 @@ router.post('/', async (req: Request, res: Response) => {
     try {
       const docs = anemia.map((r: Record<string, unknown>) => ({
         ...r,
-        asha_id: TEST_ASHA_ID,
+        asha_id: req.ashaId,
         timestamp: r.clientTimestamp ? new Date(r.clientTimestamp as string) : new Date(),
       }));
       const result = await AnemiaRecord.insertMany(docs, { ordered: false });
@@ -55,7 +56,7 @@ router.post('/', async (req: Request, res: Response) => {
     try {
       const docs = ppd.map((r: Record<string, unknown>) => ({
         ...r,
-        asha_id: TEST_ASHA_ID,
+        asha_id: req.ashaId,
         timestamp: r.clientTimestamp ? new Date(r.clientTimestamp as string) : new Date(),
       }));
       const result = await PPDRecord.insertMany(docs, { ordered: false });
@@ -82,7 +83,7 @@ router.post('/', async (req: Request, res: Response) => {
     try {
       const docs = alerts.map((r: Record<string, unknown>) => ({
         ...r,
-        asha_id: TEST_ASHA_ID,
+        asha_id: req.ashaId,
         timestamp: r.clientTimestamp ? new Date(r.clientTimestamp as string) : new Date(),
       }));
       const result = await Alert.insertMany(docs, { ordered: false });
@@ -109,7 +110,7 @@ router.post('/', async (req: Request, res: Response) => {
     try {
       const docs = referrals.map((r: Record<string, unknown>) => ({
         ...r,
-        asha_id: TEST_ASHA_ID,
+        asha_id: req.ashaId,
         timestamp: r.clientTimestamp ? new Date(r.clientTimestamp as string) : new Date(),
       }));
       const result = await Referral.insertMany(docs, { ordered: false });
@@ -136,7 +137,7 @@ router.post('/', async (req: Request, res: Response) => {
     try {
       const docs = incentives.map((r: Record<string, unknown>) => ({
         ...r,
-        asha_id: TEST_ASHA_ID,
+        asha_id: req.ashaId,
         timestamp: r.clientTimestamp ? new Date(r.clientTimestamp as string) : new Date(),
       }));
       const result = await IncentiveLog.insertMany(docs, { ordered: false });
@@ -163,7 +164,7 @@ router.post('/', async (req: Request, res: Response) => {
     try {
       const docs = wellness.map((r: Record<string, unknown>) => ({
         ...r,
-        asha_id: TEST_ASHA_ID,
+        asha_id: req.ashaId,
         timestamp: r.clientTimestamp ? new Date(r.clientTimestamp as string) : new Date(),
       }));
       const result = await WellnessCheckin.insertMany(docs, { ordered: false });
@@ -190,7 +191,7 @@ router.post('/', async (req: Request, res: Response) => {
     try {
       const docs = taskCompletions.map((r: Record<string, unknown>) => ({
         ...r,
-        asha_id: TEST_ASHA_ID,
+        asha_id: req.ashaId,
         timestamp: r.clientTimestamp ? new Date(r.clientTimestamp as string) : new Date(),
       }));
       const result = await TaskCompletion.insertMany(docs, { ordered: false });

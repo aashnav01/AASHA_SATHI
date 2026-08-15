@@ -67,7 +67,7 @@ export const SyncData: React.FC = () => {
       const alerts = (await db.unsyncedAlerts.toArray()).map(({ id: _id, ...rest }) => rest);
       const referrals = (await db.referrals.where('sync_status').equals('pending').toArray()).map(({ id: _id, sync_status, ...rest }) => rest);
       const incentives = (await db.unsyncedIncentiveLogs.toArray()).map(({ id: _id, ...rest }) => rest);
-      const wellness = (await db.wellnessCheckins.where('sync_status').equals('pending').toArray()).map(({ id: _id, sync_status, ...rest }) => rest);
+      const wellness = (await db.wellnessCheckins.where('sync_status').equals('pending').toArray()).map(({ id: _id, sync_status, ...rest }) => ({ ...rest, overall_score: rest.overall_score ?? 0 }));
       const taskCompletions = (await db.taskCompletions.where('sync_status').equals('pending').toArray()).map(({ id: _id, sync_status, ...rest }) => rest);
 
       if (anemia.length === 0 && ppd.length === 0 && alerts.length === 0 && referrals.length === 0 && incentives.length === 0 && wellness.length === 0 && taskCompletions.length === 0) {

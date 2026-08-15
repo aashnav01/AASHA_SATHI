@@ -22,7 +22,7 @@ const TaskCompletionSchema = new Schema<ITaskCompletion>({
   date: { type: String, required: true },
   frequency: { type: String, default: 'once' },
   incentive_amount: { type: Number, default: 0 },
-  clientId: { type: String, sparse: true },
+  clientId: { type: String },
   timestamp: { type: Date, default: () => new Date() },
 }, { timestamps: false });
 

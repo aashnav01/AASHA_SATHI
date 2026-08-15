@@ -6,95 +6,7 @@ import { IndianRupee, TrendingUp, Clock, CheckCircle, Plus, Share2, Loader2, Ale
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { db, makeClientId } from '../db/offlineDb';
 import { useCountUp } from '../hooks/useCountUp';
-
-// Define NHM tasks (matches backend nhmTasks.ts structure)
-interface NHMTask {
-  id: string;
-  name: string;
-  category: 'maternal' | 'immunization' | 'family_planning' | 'nutrition' | 'tb' | 'ncd';
-  amount: number;
-  description: string;
-}
-
-const NHM_TASKS: NHMTask[] = [
-  {
-    id: 'safe_delivery_escort',
-    name: 'Safe Delivery Escort',
-    category: 'maternal',
-    amount: 600,
-    description: 'सुरक्षित प्रसव एस्कॉर्ट'
-  },
-  {
-    id: 'immunization_complete',
-    name: 'Immunization Complete',
-    category: 'immunization',
-    amount: 100,
-    description: 'टीकाकरण पूर्ण'
-  },
-  {
-    id: 'anc_registration',
-    name: 'ANC Registration',
-    category: 'maternal',
-    amount: 100,
-    description: 'एएनसी पंजीकरण'
-  },
-  {
-    id: 'jsy_delivery',
-    name: 'JSY Institutional Delivery',
-    category: 'maternal',
-    amount: 1000,
-    description: 'जेएसवाई संस्थागत प्रसव'
-  },
-  {
-    id: 'ppiucd_escort',
-    name: 'PPIUCD Insertion Escort',
-    category: 'family_planning',
-    amount: 150,
-    description: 'पीपीआईयूसीडी एस्कॉर्ट'
-  },
-  {
-    id: 'tb_presumptive_referral',
-    name: 'TB Presumptive Referral',
-    category: 'tb',
-    amount: 500,
-    description: 'टीबी संदर्भ'
-  },
-  {
-    id: 'tb_treatment_completion',
-    name: 'TB Treatment Completion',
-    category: 'tb',
-    amount: 5000,
-    description: 'टीबी उपचार पूर्णता'
-  },
-  {
-    id: 'ifa_distribution',
-    name: 'IFA Distribution',
-    category: 'nutrition',
-    amount: 25,
-    description: 'आईएफए वितरण'
-  },
-  {
-    id: 'anemia_screening',
-    name: 'Anemia Screening',
-    category: 'nutrition',
-    amount: 50,
-    description: 'एनीमिया स्क्रीनिंग'
-  },
-  {
-    id: 'sam_referral',
-    name: 'SAM Child Referral',
-    category: 'nutrition',
-    amount: 300,
-    description: 'एसएएम बाल संदर्भ'
-  },
-  {
-    id: 'fp_sterilization',
-    name: 'Family Planning Sterilization',
-    category: 'family_planning',
-    amount: 300,
-    description: 'परिवार नियोजन नसबंदी'
-  }
-];
+import { NRHM_TASKS, NRHM_CATEGORIES, type NRHMTask } from '../data/nrhm74Tasks';
 
 interface OfflineIncentiveLog {
   clientId: string;
@@ -112,17 +24,17 @@ interface ChartData {
   amount: number;
 }
 
-type CategoryFilter = 'all' | 'maternal' | 'immunization' | 'family_planning' | 'nutrition' | 'tb' | 'ncd';
+type CategoryFilter = 'all' | NRHMTask['category'];
 
 export const IncentiveTracker: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { speak } = useTextToSpeech();
 
   // State
   const [logs, setLogs] = useState<OfflineIncentiveLog[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all');
   const [showForm, setShowForm] = useState(false);
-  const [selectedTask, setSelectedTask] = useState<NHMTask | null>(null);
+  const [selectedTask, setSelectedTask] = useState<NRHMTask | null>(null);
   const [dateCompleted, setDateCompleted] = useState(new Date().toISOString().split('T')[0]);
   const [isLoading, setIsLoading] = useState(false);
   const [showCopied, setShowCopied] = useState(false);
@@ -154,17 +66,20 @@ export const IncentiveTracker: React.FC = () => {
     return { total, pending, submitted, paid, taskCount };
   }, [logs]);
 
-  const { total, pending, submitted, paid, taskCount } = summary;
+  const { total } = summary;
 
   // Animate total on load
   const animatedTotal = useCountUp(total, 700);
 
-  // Filter tasks by category
+  // Filter tasks by category, and exclude tasks already logged (e.g. auto-logged
+  // when completed in the Workload Manager checklist) so nothing gets double-counted.
   const filteredTasks = useMemo(() => {
+    const loggedTaskIds = new Set(logs.map(l => l.task_id));
+    const available = NRHM_TASKS.filter(task => !loggedTaskIds.has(task.id));
     return selectedCategory === 'all'
-      ? NHM_TASKS
-      : NHM_TASKS.filter(task => task.category === selectedCategory);
-  }, [selectedCategory]);
+      ? available
+      : available.filter(task => task.category === selectedCategory);
+  }, [selectedCategory, logs]);
 
   // Generate chart data (weekly earnings)
   const chartData: ChartData[] = useMemo(() => {
@@ -203,7 +118,7 @@ export const IncentiveTracker: React.FC = () => {
         task_id: selectedTask.id,
         task_name: selectedTask.name,
         category: selectedTask.category,
-        amount_earned: selectedTask.amount,
+        amount_earned: selectedTask.incentive_amount,
         date_completed: dateCompleted,
         status: 'pending'
       };
@@ -214,7 +129,7 @@ export const IncentiveTracker: React.FC = () => {
       setDateCompleted(new Date().toISOString().split('T')[0]);
       setShowForm(false);
 
-      speak(`${t('common.success', 'Success')}. Logged ${selectedTask.name} for ₹${selectedTask.amount}`);
+      speak(`${t('common.success', 'Success')}. Logged ${selectedTask.name} for ₹${selectedTask.incentive_amount}`);
       
       await loadLogs();
     } catch (error) {
@@ -262,14 +177,27 @@ export const IncentiveTracker: React.FC = () => {
     });
   };
 
-  // Category tabs
-  const categories: { value: CategoryFilter; label: string; icon: string }[] = [
-    { value: 'all', label: t('incentive.all_tasks', 'All'), icon: '📋' },
-    { value: 'maternal', label: t('incentive.maternal', 'Maternal'), icon: '🤰' },
-    { value: 'immunization', label: t('incentive.immunization', 'Immunization'), icon: '💉' },
-    { value: 'tb', label: t('incentive.tb', 'TB'), icon: '🫁' },
-    { value: 'nutrition', label: t('incentive.nutrition', 'Nutrition'), icon: '🥗' },
-    { value: 'family_planning', label: t('incentive.family_planning', 'Family Plan'), icon: '👨‍👩‍👧‍👦' }
+  // Logs only store a language-neutral task_name/category; resolve them back
+  // to the current UI language via the canonical task list where possible.
+  const localizedTaskName = (log: OfflineIncentiveLog): string => {
+    const task = NRHM_TASKS.find(t => t.id === log.task_id);
+    if (!task) return log.task_name;
+    return i18n.language === 'hi' ? task.name_hi : task.name;
+  };
+
+  const localizedCategory = (categoryId: string): string => {
+    const cat = NRHM_CATEGORIES.find(c => c.id === categoryId);
+    if (!cat) return categoryId;
+    return i18n.language === 'hi' ? cat.name_hi : cat.name;
+  };
+
+  // Category tabs — sourced from the same 8 NRHM categories as Workload Manager
+  const categories: { value: CategoryFilter; label: string }[] = [
+    { value: 'all', label: t('incentive.all_tasks', 'All') },
+    ...NRHM_CATEGORIES.map(cat => ({
+      value: cat.id as CategoryFilter,
+      label: i18n.language === 'hi' ? cat.name_hi : cat.name,
+    })),
   ];
 
   return (
@@ -370,7 +298,7 @@ export const IncentiveTracker: React.FC = () => {
                     : 'bg-white text-gray-700 border border-gray-300'
                 }`}
               >
-                <span className="mr-1">{cat.icon}</span>{cat.label}
+                {cat.label}
               </button>
             ))}
           </div>
@@ -378,6 +306,11 @@ export const IncentiveTracker: React.FC = () => {
           {/* Task Grid */}
           <div>
             <label className="text-sm font-bold text-gray-700 mb-2 block">{t('incentive.select_task', 'Select Task')}</label>
+            {filteredTasks.length === 0 ? (
+              <p className="text-xs text-gray-500 italic py-2">
+                {t('incentive.all_logged', 'All tasks in this category are already logged.')}
+              </p>
+            ) : (
             <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
               {filteredTasks.map(task => (
                 <button
@@ -389,11 +322,12 @@ export const IncentiveTracker: React.FC = () => {
                       : 'border-gray-300 bg-white'
                   }`}
                 >
-                  <p className="font-bold text-sm text-gray-900">{task.name}</p>
-                  <p className="text-xs text-green-600 mt-1">₹{task.amount}</p>
+                  <p className="font-bold text-sm text-gray-900">{i18n.language === 'hi' ? task.name_hi : task.name}</p>
+                  <p className="text-xs text-green-600 mt-1">₹{task.incentive_amount}</p>
                 </button>
               ))}
             </div>
+            )}
           </div>
 
           {/* Date Completed */}
@@ -464,9 +398,9 @@ export const IncentiveTracker: React.FC = () => {
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <p className="font-bold text-gray-900 text-sm">{log.task_name}</p>
+                    <p className="font-bold text-gray-900 text-sm">{localizedTaskName(log)}</p>
                     <p className="text-xs text-gray-600 mt-1">
-                      ₹{log.amount_earned} • {log.date_completed} • {log.category}
+                      ₹{log.amount_earned} • {log.date_completed} • {localizedCategory(log.category)}
                     </p>
                   </div>
                   <span className={`text-xs font-bold px-2 py-1 rounded-full ${

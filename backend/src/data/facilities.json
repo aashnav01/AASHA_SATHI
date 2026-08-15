@@ -1,7 +1,13 @@
 {
   "version": "2024_q1",
-  "source": "MoHFW Public Health Facilities Master",
+  "source": "Illustrative starter list only — NOT pulled from an official government dataset. Facility names/coordinates approximate real institutions; phone numbers are placeholders and must be replaced before field use.",
   "description": "PHC (Primary Health Centers) and FRU (First Referral Units) across India for emergency referral",
+  "real_data_sources": [
+    "Ayushman Bharat Digital Mission Health Facility Registry (facility.abdm.gov.in) — the closest thing to a national facility directory with IDs, but bulk export/API access requires ABDM registration.",
+    "State NHM websites (e.g. nhm.<state>.gov.in) usually publish PHC/CHC/FRU lists with contact numbers per district.",
+    "The local district health office / CMHO (Chief Medical Health Officer) holds the authoritative, current phone directory for facilities an ASHA actually refers patients to — this is genuinely local knowledge, not something scrapeable, and should be collected directly from the supervising PHC when onboarding ASHAs in a district.",
+    "data.gov.in health facility datasets are mostly aggregate counts (number of PHCs/CHCs per state), not per-facility contact directories."
+  ],
   "facilities": [
     {
       "id": "phc_maharashtra_001",
@@ -208,5 +214,5 @@
     "ambulance_available": "24/7 in all states",
     "jssk_coverage": "Free transport for pregnant women under JSSK"
   },
-  "notes": "This is a simplified master list. In production, integrate with real HMIS (Health Management Information System) or MoHFW APIs for up-to-date facility status and real-time data. Each state may have variations."
+  "notes": "This is a simplified, illustrative list with placeholder phone numbers — it is not real MoHFW/HMIS data. Before deploying with real ASHA workers, replace facilities for each operating district with the actual PHC/FRU names and contact numbers obtained from the local CMHO/district health office (see real_data_sources above)."
 }

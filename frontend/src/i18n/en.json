@@ -3,6 +3,21 @@
   "welcome": "Welcome",
   "logout": "Logout",
   "language": "Language",
+  "auth": {
+    "login_title": "Log in",
+    "register_title": "Create your account",
+    "name": "Full name",
+    "name_placeholder": "Enter your name",
+    "mobile": "Mobile number",
+    "mobile_placeholder": "10-digit mobile number",
+    "pin": "PIN",
+    "pin_placeholder": "4-6 digit PIN",
+    "login_button": "Log in",
+    "register_button": "Create account",
+    "switch_to_register": "New ASHA worker? Create an account",
+    "switch_to_login": "Already have an account? Log in",
+    "generic_error": "Something went wrong. Please try again."
+  },
   "tabs": {
     "anemia": "Anemia",
     "ppd": "PPD Screen",
@@ -379,8 +394,9 @@
     "copied": "Summary copied to clipboard",
     "summary_ready": "Summary ready to share!",
     "no_pending": "No pending tasks to submit",
+    "all_logged": "All tasks in this category are already logged.",
     "tip": "Tip",
-    "tip_text": "Log tasks after completion. Use \"Submit ANM\" to share your summary for verification and payment processing."
+    "tip_text": "Completing a task in the Tasks tab logs its incentive here automatically. Use \"Log Task\" only for extra work not on your task checklist. Use \"Submit ANM\" to share your summary for verification and payment processing."
   },
   "wellness": {
     "title": "Your Wellness",

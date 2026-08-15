@@ -242,11 +242,14 @@ export const AnemiaTracker: React.FC = () => {
                 const label = t(`anemia.symptoms.${k}`) !== `anemia.symptoms.${k}` ? t(`anemia.symptoms.${k}`) : displayName;
                 const selected = symptoms.includes(displayName);
                 return (
-                  <button
+                  <div
                     key={displayName}
                     id={`symptom-${k}`}
+                    role="button"
+                    tabIndex={0}
                     onClick={() => toggleItem(symptoms, setSymptoms, displayName)}
-                    className={`p-4 rounded-xl border-2 font-bold text-left transition-all text-sm flex flex-col items-center gap-1 ${
+                    onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleItem(symptoms, setSymptoms, displayName); } }}
+                    className={`p-4 rounded-xl border-2 font-bold text-left transition-all text-sm flex flex-col items-center gap-1 cursor-pointer ${
                       selected
                         ? 'border-rose-400 bg-rose-50 text-rose-700 shadow-inner scale-[1.02]'
                         : 'bg-white/60 border-gray-100 text-gray-600 hover:border-gray-300'
@@ -261,7 +264,7 @@ export const AnemiaTracker: React.FC = () => {
                     >
                       <Volume2 size={14} />
                     </button>
-                  </button>
+                  </div>
                 );
               })}
             </div>
@@ -277,11 +280,14 @@ export const AnemiaTracker: React.FC = () => {
                 const label = t(`anemia.foods.${k}`) !== `anemia.foods.${k}` ? t(`anemia.foods.${k}`) : displayName;
                 const selected = foods.includes(displayName);
                 return (
-                  <button
+                  <div
                     key={displayName}
                     id={`food-${k}`}
+                    role="button"
+                    tabIndex={0}
                     onClick={() => toggleItem(foods, setFoods, displayName)}
-                    className={`p-4 rounded-xl border-2 font-bold text-left transition-all text-sm flex flex-col items-center gap-1 ${
+                    onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleItem(foods, setFoods, displayName); } }}
+                    className={`p-4 rounded-xl border-2 font-bold text-left transition-all text-sm flex flex-col items-center gap-1 cursor-pointer ${
                       selected
                         ? 'border-emerald-400 bg-emerald-50 text-emerald-700 shadow-inner scale-[1.02]'
                         : 'bg-white/60 border-gray-100 text-gray-600 hover:border-gray-300'
@@ -296,7 +302,7 @@ export const AnemiaTracker: React.FC = () => {
                     >
                       <Volume2 size={14} />
                     </button>
-                  </button>
+                  </div>
                 );
               })}
             </div>

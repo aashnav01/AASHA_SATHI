@@ -1,7 +1,7 @@
 {
   "schemes": [
     {
-      "id": "jssk",
+      "id": "jsy",
       "category": "maternal",
       "name": "Janani Suraksha Yojana",
       "hindi_name": "जननी सुरक्षा योजना",
@@ -11,12 +11,30 @@
       "eligible_hi": "भारत की सभी गर्भवती महिलाएं",
       "how_to_claim": "Register at ANM, Aganwadi, or nearest health facility. ASHA assists in documentation and transport.",
       "how_to_claim_hi": "ANM, आंगनवाड़ी या निकटतम स्वास्थ्य सुविधा पर पंजीकरण करें। आशा दस्तावेज़ और परिवहन में सहायता करती है।",
-      "asha_role": "1. Identify pregnant women in village\n2. Explain JSSK benefits (free delivery, transport)\n3. Assist in registration and ANC enrollment\n4. Arrange safe transport during labor\n5. Ensure mother reaches health facility in time",
-      "asha_role_hi": "1. गांव में गर्भवती महिलाओं की पहचान करें\n2. JSSK लाभ समझाएं (प्रसव, परिवहन मुफ्त)\n3. पंजीकरण और ANC नामांकन में सहायता करें\n4. प्रसव के समय सुरक्षित परिवहन की व्यवस्था करें\n5. माता को स्वास्थ्य सुविधा तक पहुंचाएं",
-      "amount": "Free delivery + Rs 600 cash incentive for ASHA",
-      "amount_hi": "मुफ्त प्रसव + आशा के लिए ₹600 नकद प्रोत्साहन",
+      "asha_role": "1. Identify pregnant women in village\n2. Explain JSY benefits (cash incentive for institutional delivery)\n3. Assist in registration and ANC enrollment\n4. Arrange safe transport during labor\n5. Ensure mother reaches health facility in time",
+      "asha_role_hi": "1. गांव में गर्भवती महिलाओं की पहचान करें\n2. JSY लाभ समझाएं (संस्थागत प्रसव के लिए नकद प्रोत्साहन)\n3. पंजीकरण और ANC नामांकन में सहायता करें\n4. प्रसव के समय सुरक्षित परिवहन की व्यवस्था करें\n5. माता को स्वास्थ्य सुविधा तक पहुंचाएं",
+      "amount": "ASHA package: Rs 600 rural (Rs 300 ANC + Rs 300 institutional delivery) / Rs 400 urban (Rs 200 + Rs 200)",
+      "amount_hi": "आशा पैकेज: ग्रामीण ₹600 (₹300 ANC + ₹300 संस्थागत प्रसव) / शहरी ₹400 (₹200 + ₹200)",
       "documents": ["Aadhar card (optional)", "MCP card (Maternity & Child Protection)"],
       "documents_hi": ["आधार कार्ड (वैकल्पिक)", "MCP कार्ड (मातृत्व और बाल संरक्षण)"]
+    },
+    {
+      "id": "pmmvy",
+      "category": "maternal",
+      "name": "Pradhan Mantri Matru Vandana Yojana",
+      "hindi_name": "प्रधान मंत्री मातृ वंदना योजना",
+      "description": "Cash maternity benefit for pregnant and lactating women to compensate wage loss and support nutrition",
+      "hindi_description": "मजदूरी हानि की भरपाई और पोषण सहायता के लिए गर्भवती और स्तनपान कराने वाली महिलाओं हेतु नकद मातृत्व लाभ",
+      "eligible": "Pregnant/lactating women for first living child; second child only if girl (excludes central/state govt employees)",
+      "eligible_hi": "पहले जीवित बच्चे के लिए गर्भवती/स्तनपान कराने वाली महिलाएं; दूसरे बच्चे के लिए केवल यदि लड़की हो (केंद्र/राज्य सरकार कर्मचारी बाहर)",
+      "how_to_claim": "Register on PMMVY portal/app or at Anganwadi Centre with MCP card. ASHA assists with form filling and instalment tracking.",
+      "how_to_claim_hi": "PMMVY पोर्टल/ऐप या MCP कार्ड के साथ आंगनवाड़ी केंद्र पर पंजीकरण करें। आशा फॉर्म भरने और किस्त ट्रैकिंग में सहायता करती है।",
+      "asha_role": "1. Identify eligible pregnant/lactating women\n2. Assist with PMMVY registration and document collection\n3. Track instalment milestones (ANC, delivery, immunization)\n4. Follow up on delayed payments",
+      "asha_role_hi": "1. पात्र गर्भवती/स्तनपान कराने वाली महिलाओं की पहचान करें\n2. PMMVY पंजीकरण और दस्तावेज़ संग्रह में सहायता करें\n3. किस्त के मील के पत्थर ट्रैक करें (ANC, प्रसव, टीकाकरण)\n4. विलंबित भुगतान पर अनुवर्ती कार्रवाई करें",
+      "amount": "Rs 5,000 for first child (2 instalments: Rs 3,000 after ANC, Rs 2,000 after delivery + immunization); Rs 6,000 lump sum for second child if girl",
+      "amount_hi": "पहले बच्चे के लिए ₹5,000 (2 किस्तें: ANC के बाद ₹3,000, प्रसव + टीकाकरण के बाद ₹2,000); दूसरे बच्चे (लड़की) के लिए ₹6,000 एकमुश्त",
+      "documents": ["Aadhar card", "MCP card", "Bank account details"],
+      "documents_hi": ["आधार कार्ड", "MCP कार्ड", "बैंक खाता विवरण"]
     },
     {
       "id": "pmjdy",
@@ -65,8 +83,8 @@
       "how_to_claim_hi": "राशन कार्ड या आधार का उपयोग करके स्थानीय राशन दुकान में पंजीकरण करें। मासिक कोटा लें।",
       "asha_role": "1. Inform about PDS entitlements\n2. Guide to ration shop registration\n3. Explain importance of nutrition during pregnancy\n4. Encourage regular meal collection",
       "asha_role_hi": "1. PDS हक के बारे में सूचित करें\n2. राशन दुकान में पंजीकरण के लिए गाइड करें\n3. गर्भावस्था में पोषण का महत्व समझाएं\n4. नियमित भोजन लेने के लिए प्रोत्साहित करें",
-      "amount": "25 kg rice + 25 kg wheat per month (BPL families)",
-      "amount_hi": "₹2-3 की सब्सिडी के साथ 25 किग्रा चावल + 25 किग्रा गेहूं प्रति माह",
+      "amount": "5 kg foodgrain per person/month at Rs 2-3/kg (Priority Households); 35 kg per household/month (Antyodaya/poorest households)",
+      "amount_hi": "प्रति व्यक्ति 5 किग्रा अनाज प्रति माह ₹2-3/किग्रा पर (प्राथमिकता परिवार); अंत्योदय (सबसे गरीब) परिवारों के लिए 35 किग्रा प्रति परिवार प्रति माह",
       "documents": ["Ration Card or Aadhar", "BPL certificate"]
     },
     {
@@ -138,7 +156,7 @@
       "documents": ["Aadhar or ID proof"]
     },
     {
-      "id": "jsy",
+      "id": "jssk",
       "category": "maternal",
       "name": "Janani Shishu Suraksha Karyakram",
       "hindi_name": "जननी शिशु सुरक्षा कार्यक्रम",
@@ -155,12 +173,12 @@
       "documents": ["ID/Aadhar"]
     },
     {
-      "id": "nmbs",
+      "id": "mmu",
       "category": "health",
-      "name": "National Mobile Benefit Scheme",
-      "hindi_name": "राष्ट्रीय मोबाइल लाभ योजना",
-      "description": "Mobile clinics for remote villages delivering free health services",
-      "hindi_description": "दूरदराज के गांवों के लिए मोबाइल क्लीनिक मुफ्त स्वास्थ्य सेवाएं प्रदान करते हुए",
+      "name": "Mobile Medical Units (MMU)",
+      "hindi_name": "मोबाइल चिकित्सा इकाई",
+      "description": "NHM-run mobile clinics bringing free primary, curative and referral health services to remote and tribal villages",
+      "hindi_description": "NHM द्वारा संचालित मोबाइल क्लीनिक जो दूरदराज और आदिवासी गांवों में मुफ्त प्राथमिक, उपचारात्मक और रेफरल स्वास्थ्य सेवाएं पहुंचाते हैं",
       "eligible": "All residents in remote/underserved areas",
       "eligible_hi": "दूरदराज/कम सेवा वाले क्षेत्रों के सभी निवासी",
       "how_to_claim": "Visit mobile health clinic when it visits your village (dates announced by ASHA/ANM)",

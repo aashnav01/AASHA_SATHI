@@ -3,8 +3,11 @@ import { AnemiaRecord } from '../models/AnemiaRecord';
 import { PPDRecord } from '../models/PPDRecord';
 import { Alert } from '../models/Alert';
 import { User } from '../models/User';
+import { requireAuth, requireRole } from '../middleware/auth';
 
 const router = Router();
+// These endpoints aggregate data across all ASHAs, so only supervisors/admins may call them.
+router.use(requireAuth, requireRole('supervisor', 'admin'));
 
 // ─── GET /api/supervisor/ashas ─────────────────────────────────────────────────
 router.get('/ashas', async (_req: Request, res: Response) => {

@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import facilities from '../data/facilities.json';
 import { Referral } from '../models/Referral';
-import { TEST_ASHA_ID } from './asha';
+import { requireAuth } from '../middleware/auth';
 
 const router = Router();
 
@@ -10,7 +10,7 @@ const router = Router();
  * Log a referral event when ASHA escorts pregnant woman to health facility
  * Persists to MongoDB with clientId-based deduplication for offline sync
  */
-router.post('/log', async (req: Request, res: Response) => {
+router.post('/log', requireAuth, async (req: Request, res: Response) => {
   try {
     const {
       patient_name,
@@ -28,7 +28,7 @@ router.post('/log', async (req: Request, res: Response) => {
     }
 
     const referral = await Referral.create({
-      asha_id: TEST_ASHA_ID,
+      asha_id: req.ashaId,
       patient_name,
       facility_id,
       status: status || 'pending',

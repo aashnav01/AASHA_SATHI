@@ -7,3 +7,7 @@ dist/
 build/
 .DS_Store
 Thumbs.db
+
+# Generated build/lint reports
+build_output.txt
+eslint_report.json

@@ -18,7 +18,7 @@ const AlertSchema = new Schema<IAlert>({
   timestamp: { type: Date, default: () => new Date() },
   status: { type: String, enum: ['active', 'resolved'], default: 'active' },
   notified_recipients: { type: Number, default: 0 },
-  clientId: { type: String, sparse: true },
+  clientId: { type: String },
 }, { timestamps: false });
 
 AlertSchema.index({ asha_id: 1 });

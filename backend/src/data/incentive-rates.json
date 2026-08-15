@@ -47,16 +47,16 @@
     {
       "id": "anc_mobilization",
       "category": "maternal",
-      "description": "Mobilization for and accompaniment to ANC checkup",
-      "amount": 600,
-      "hindi_description": "ANC जांच के लिए गतिविधि और साथ"
+      "description": "Mobilization for and accompaniment to ANC checkup (JSY ANC component, rural rate)",
+      "amount": 300,
+      "hindi_description": "ANC जांच के लिए गतिविधि और साथ (JSY ANC घटक, ग्रामीण दर)"
     },
     {
       "id": "safe_delivery",
       "category": "maternal",
-      "description": "Mobilization for safe institutional delivery and escort",
-      "amount": 600,
-      "hindi_description": "सुरक्षित संस्थागत प्रसव और साथ के लिए गतिविधि"
+      "description": "Mobilization for safe institutional delivery and escort (JSY delivery component, rural rate)",
+      "amount": 300,
+      "hindi_description": "सुरक्षित संस्थागत प्रसव और साथ के लिए गतिविधि (JSY प्रसव घटक, ग्रामीण दर)"
     },
     {
       "id": "pnc_mobilization",
@@ -138,7 +138,7 @@
     {
       "id": "jssk_awareness",
       "category": "maternal",
-      "description": "JSSK (Janani Suraksha Yojana) awareness and promotion",
+      "description": "JSSK (Janani Shishu Suraksha Karyakram) awareness and promotion",
       "amount": 50,
       "hindi_description": "JSSK जागरूकता और प्रचार"
     },

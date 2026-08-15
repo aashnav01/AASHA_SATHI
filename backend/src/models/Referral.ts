@@ -32,7 +32,7 @@ const ReferralSchema = new Schema<IReferral>({
     aadhaar: { type: Boolean, default: false },
     cash: { type: Boolean, default: false },
   },
-  clientId: { type: String, index: true, sparse: true },
+  clientId: { type: String },
   timestamp: { type: Date, default: Date.now },
 }, { timestamps: false });
 

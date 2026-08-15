@@ -1,9 +1,43 @@
 import axios from 'axios';
 
+const AUTH_STORAGE_KEY = 'asha_sathi_auth';
+
 const API = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:8000/api',
   headers: { 'Content-Type': 'application/json' },
 });
+
+API.interceptors.request.use((config) => {
+  const raw = localStorage.getItem(AUTH_STORAGE_KEY);
+  if (raw) {
+    const { token } = JSON.parse(raw) as { token: string };
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// ── Auth ─────────────────────────────────────────────────────────────────────
+
+export interface AuthUser {
+  id: string;
+  name: string;
+  mobile: string;
+  role: 'asha' | 'supervisor' | 'admin';
+}
+
+export interface AuthResponse {
+  token: string;
+  user: AuthUser;
+}
+
+export const registerAsha = (name: string, mobile: string, pin: string) =>
+  API.post<AuthResponse>('/auth/register', { name, mobile, pin }).then((r) => r.data);
+
+export const loginAsha = (mobile: string, pin: string) =>
+  API.post<AuthResponse>('/auth/login', { mobile, pin }).then((r) => r.data);
+
+export const fetchMe = () =>
+  API.get<{ user: AuthUser }>('/auth/me').then((r) => r.data.user);
 
 // ── Tasks ────────────────────────────────────────────────────────────────────
 

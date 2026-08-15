@@ -50,12 +50,22 @@ export const WorkloadManager: React.FC = () => {
     setTimeout(() => setRipplingTask(null), 580);
     try {
       const dateStr = new Date().toISOString().split('T')[0];
+      const nowIso = new Date().toISOString();
       await db.taskCompletions.add({
-        clientId: makeClientId(), clientTimestamp: new Date().toISOString(),
+        clientId: makeClientId(), clientTimestamp: nowIso,
         task_id: task.id, task_name: task.name, category: task.category,
-        completed_at: new Date().toISOString(), date: dateStr,
+        completed_at: nowIso, date: dateStr,
         frequency: task.frequency, incentive_amount: task.incentive_amount, sync_status: 'pending',
       });
+      // Completing a task earns its incentive automatically — no separate
+      // manual entry in Incentive Tracker needed for tasks tracked here.
+      if (task.incentive_amount > 0) {
+        await db.unsyncedIncentiveLogs.add({
+          clientId: makeClientId(), clientTimestamp: nowIso,
+          task_id: task.id, task_name: task.name, category: task.category,
+          amount_earned: task.incentive_amount, date_completed: dateStr, status: 'pending',
+        });
+      }
       speak(`${t('workload.completed')}: ${task.name}`);
       setShowToast(true);
       await loadTaskCompletions();

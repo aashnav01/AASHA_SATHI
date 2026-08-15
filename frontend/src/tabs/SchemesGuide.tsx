@@ -281,9 +281,12 @@ export const SchemesGuide: React.FC = () => {
               }`}
             >
               {/* Header (Always Visible) */}
-              <button
+              <div
+                role="button"
+                tabIndex={0}
                 onClick={() => toggleExpand(scheme.id)}
-                className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors text-left"
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleExpand(scheme.id); } }}
+                className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors text-left cursor-pointer"
               >
                 <div className="flex-1 min-w-0">
                   <p className="font-bold text-gray-900 text-sm line-clamp-1">
@@ -310,7 +313,7 @@ export const SchemesGuide: React.FC = () => {
                     <ChevronDown size={20} className="text-gray-600" />
                   )}
                 </div>
-              </button>
+              </div>
 
               {/* Expanded Details */}
               {expandedScheme === scheme.id && (

@@ -357,11 +357,14 @@ export const PPDScreening: React.FC = () => {
             }} 
           />
           {OPTIONS_BASE.map((opt, oi) => (
-            <button
+            <div
               key={opt.value}
               id={`ppd-opt-${opt.value}`}
+              role="button"
+              tabIndex={0}
               onClick={() => handleSelect(opt.value)}
-              className={`w-full p-4 rounded-2xl border-2 font-bold text-base text-left transition-all flex justify-between items-center active:scale-95 ${
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleSelect(opt.value); } }}
+              className={`w-full p-4 rounded-2xl border-2 font-bold text-base text-left transition-all flex justify-between items-center active:scale-95 cursor-pointer ${
                 answers[currentQ] === opt.value
                   ? 'border-violet-400 bg-violet-50 text-violet-700 shadow-md'
                   : 'border-gray-100 bg-white/60 text-gray-700 hover:border-primary/40 hover:bg-primary/5'
@@ -376,7 +379,7 @@ export const PPDScreening: React.FC = () => {
               >
                 <Volume2 size={18} />
               </button>
-            </button>
+            </div>
           ))}
         </div>
 

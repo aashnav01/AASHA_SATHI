@@ -4,11 +4,10 @@ import { User } from '../models/User';
 import { Alert } from '../models/Alert';
 import { Task } from '../models/Task';
 import twilio from 'twilio';
+import { requireAuth } from '../middleware/auth';
 
 const router = Router();
-
-// Fixed test ASHA ID – same as the Python app
-export const TEST_ASHA_ID = new Types.ObjectId('65f1a2b3c4d5e6f7a8b9c0d1');
+router.use(requireAuth);
 
 // ─── Real/Mock SMS ─────────────────────────────────────────────────────────────────
 async function sendSms(phone: string, message: string) {
@@ -40,7 +39,7 @@ async function sendSms(phone: string, message: string) {
 router.post('/panic', async (req: Request, res: Response) => {
   try {
     const location: { lat: number; lng: number } = req.body;
-    const asha = await User.findById(TEST_ASHA_ID);
+    const asha = await User.findById(req.ashaId);
     if (!asha) return res.status(404).json({ error: 'ASHA user not found' });
 
     const mapsUrl = `https://maps.google.com/?q=${location.lat},${location.lng}`;
@@ -68,7 +67,7 @@ router.post('/panic', async (req: Request, res: Response) => {
 
     // Log alert to DB
     await Alert.create({
-      asha_id: TEST_ASHA_ID,
+      asha_id: req.ashaId,
       location,
       timestamp: now,
       status: 'active',
@@ -86,7 +85,7 @@ router.post('/panic', async (req: Request, res: Response) => {
 router.get('/tasks', async (req: Request, res: Response) => {
   try {
     const showCompleted = req.query.show_completed === 'true';
-    const filter: Record<string, unknown> = { asha_id: TEST_ASHA_ID };
+    const filter: Record<string, unknown> = { asha_id: req.ashaId };
     if (!showCompleted) filter.completed = false;
 
     const tasks = await Task.find(filter).sort({ due_date: 1 }).limit(100);
@@ -122,7 +121,7 @@ router.post('/tasks', async (req: Request, res: Response) => {
         : 'medium');
 
     const task = await Task.create({
-      asha_id: TEST_ASHA_ID,
+      asha_id: req.ashaId,
       title,
       description: description || undefined,
       due_date: due_date ? new Date(due_date) : undefined,
@@ -152,7 +151,7 @@ router.patch('/tasks/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const result = await Task.updateOne(
-      { _id: new Types.ObjectId(id), asha_id: TEST_ASHA_ID },
+      { _id: new Types.ObjectId(id), asha_id: req.ashaId },
       { $set: { completed: true } },
     );
     if (result.modifiedCount === 0) return res.status(404).json({ error: 'Task not found' });

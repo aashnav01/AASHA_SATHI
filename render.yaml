@@ -1,0 +1,48 @@
+services:
+  # ─── Backend API ────────────────────────────────────────────────────────────
+  - type: web
+    name: asha-sathi-api
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22.15.0
+      - key: NODE_ENV
+        value: production
+      # Set in the Render dashboard (marked sync:false = not stored in git).
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ALLOWED_ORIGIN
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_PHONE_NUMBER
+        sync: false
+
+  # ─── Frontend static site ───────────────────────────────────────────────────
+  - type: web
+    name: asha-sathi-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: NODE_VERSION
+        value: 22.15.0
+      - key: VITE_API_URL
+        sync: false
+    routes:
+      # Client-side routing: serve index.html for any unmatched path.
+      - type: rewrite
+        source: /*
+        destination: /index.html

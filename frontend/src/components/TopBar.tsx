@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Bell, User, Globe, X, ChevronDown } from 'lucide-react';
+import { Bell, User, Globe, X, ChevronDown, LogOut } from 'lucide-react';
 import { useOnlineStatus } from '../hooks/useOnlineStatus';
 import { useTextToSpeech } from '../hooks/useTextToSpeech';
+import { useAuth } from '../context/AuthContext';
 
 export const TopBar: React.FC = () => {
   const { t, i18n } = useTranslation();
   const isOnline = useOnlineStatus();
   const { speak } = useTextToSpeech();
+  const { user, logout } = useAuth();
   const [showProfile, setShowProfile] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
 
@@ -96,8 +98,8 @@ export const TopBar: React.FC = () => {
             {showProfile && (
               <div className="absolute right-0 top-full mt-2 w-52 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/60 z-[200] animate-slide-up overflow-hidden">
                 <div className="p-4 border-b border-gray-100">
-                  <p className="font-bold text-gray-900 text-sm">ASHA Worker</p>
-                  <p className="text-xs text-gray-400 font-medium">Primary Health Centre</p>
+                  <p className="font-bold text-gray-900 text-sm">{user?.name ?? t('greeting.worker')}</p>
+                  <p className="text-xs text-gray-400 font-medium">{user?.mobile}</p>
                 </div>
                 <div className="p-2">
                   <button
@@ -106,6 +108,13 @@ export const TopBar: React.FC = () => {
                   >
                     <Globe size={16} className="text-primary" />
                     {{ en: 'Switch to हिंदी', hi: 'Switch to తెలుగు', te: 'Switch to English' }[i18n.language] ?? 'Switch Language'}
+                  </button>
+                  <button
+                    onClick={logout}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-red-50 transition-colors text-sm font-semibold text-red-600"
+                  >
+                    <LogOut size={16} />
+                    {t('logout')}
                   </button>
                 </div>
                 <button

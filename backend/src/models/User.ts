@@ -4,6 +4,7 @@ export interface IUser extends Document {
   _id: Types.ObjectId;
   name: string;
   mobile: string;
+  pin_hash: string;
   role: 'asha' | 'supervisor' | 'admin';
   emergency_contacts: Array<{ name: string; phone: string }>;
   // supervisor_id stored as ObjectId | null; Python app stored as None/string – see ensureSupervisorIdObjectId()
@@ -13,6 +14,7 @@ export interface IUser extends Document {
 const UserSchema = new Schema<IUser>({
   name: { type: String, required: true },
   mobile: { type: String, required: true, unique: true },
+  pin_hash: { type: String, required: true },
   role: { type: String, enum: ['asha', 'supervisor', 'admin'], required: true },
   emergency_contacts: [
     {

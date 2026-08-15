@@ -17,7 +17,7 @@ const PPDRecordSchema = new Schema<IPPDRecord>({
   risk_level: { type: String, enum: ['low', 'medium', 'high'], required: true },
   referral_message: { type: String, required: true },
   timestamp: { type: Date, default: () => new Date() },
-  clientId: { type: String, sparse: true },
+  clientId: { type: String },
 }, { timestamps: false });
 
 PPDRecordSchema.index({ asha_id: 1 });

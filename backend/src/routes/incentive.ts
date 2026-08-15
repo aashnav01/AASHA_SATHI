@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { IncentiveLog } from '../models/IncentiveLog';
 import incentiveRates from '../data/incentive-rates.json';
+import { requireAuth } from '../middleware/auth';
 
 const router = Router();
 
@@ -9,10 +10,9 @@ const router = Router();
  * Log a completed task for an ASHA worker
  * Supports offline-first: clientId used for sync deduplication
  */
-router.post('/log', async (req: Request, res: Response) => {
+router.post('/log', requireAuth, async (req: Request, res: Response) => {
   try {
     const {
-      asha_id,
       task_id,
       task_name,
       category,
@@ -22,9 +22,9 @@ router.post('/log', async (req: Request, res: Response) => {
     } = req.body;
 
     // Validate required fields
-    if (!asha_id || !task_id || !task_name || !category || !date_completed) {
+    if (!task_id || !task_name || !category || !date_completed) {
       return res.status(400).json({
-        error: 'Missing required fields: asha_id, task_id, task_name, category, date_completed'
+        error: 'Missing required fields: task_id, task_name, category, date_completed'
       });
     }
 
@@ -34,7 +34,7 @@ router.post('/log', async (req: Request, res: Response) => {
 
     // Create incentive log entry
     const incentiveLog = new IncentiveLog({
-      asha_id,
+      asha_id: req.ashaId,
       task_id,
       task_name,
       category,
@@ -77,15 +77,11 @@ router.post('/log', async (req: Request, res: Response) => {
 
 /**
  * GET /api/incentive/earnings
- * Get earnings summary for an ASHA worker
+ * Get earnings summary for the authenticated ASHA worker
  */
-router.get('/earnings', async (req: Request, res: Response) => {
+router.get('/earnings', requireAuth, async (req: Request, res: Response) => {
   try {
-    const { asha_id } = req.query;
-
-    if (!asha_id) {
-      return res.status(400).json({ error: 'Missing required parameter: asha_id' });
-    }
+    const asha_id = req.ashaId;
 
     // Fetch all incentive logs for this ASHA
     const logs = await IncentiveLog.find({ asha_id }).sort({ date_completed: -1 });
@@ -178,19 +174,19 @@ router.get('/rates', async (req: Request, res: Response) => {
  * POST /api/incentive/dispute
  * Flag a delayed or missing payment
  */
-router.post('/dispute', async (req: Request, res: Response) => {
+router.post('/dispute', requireAuth, async (req: Request, res: Response) => {
   try {
     const { incentive_log_id, dispute_reason } = req.body;
 
     if (!incentive_log_id || !dispute_reason) {
-      return res.status(400).json({ 
-        error: 'Missing fields: incentive_log_id, dispute_reason' 
+      return res.status(400).json({
+        error: 'Missing fields: incentive_log_id, dispute_reason'
       });
     }
 
-    // Find and update the incentive log with dispute
-    const updated = await IncentiveLog.findByIdAndUpdate(
-      incentive_log_id,
+    // Find and update the incentive log with dispute (scoped to the caller's own records)
+    const updated = await IncentiveLog.findOneAndUpdate(
+      { _id: incentive_log_id, asha_id: req.ashaId },
       { dispute_reason },
       { new: true }
     );
