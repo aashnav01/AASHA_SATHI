@@ -7,9 +7,12 @@ services:
     name: asha-sathi
     runtime: node
     plan: free
+    # --include=dev is required: NODE_ENV=production below makes npm omit
+    # devDependencies, and the build tools (vite, typescript, @types/node)
+    # all live there. They are build-time only and are not needed at runtime.
     buildCommand: >-
-      cd frontend && npm ci && npm run build &&
-      cd ../backend && npm ci && npm run build
+      cd frontend && npm ci --include=dev && npm run build &&
+      cd ../backend && npm ci --include=dev && npm run build
     startCommand: cd backend && npm start
     healthCheckPath: /api/health
     envVars:
