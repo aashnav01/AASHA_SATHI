@@ -73,7 +73,10 @@ if (ALLOWED_ORIGINS.length > 0) {
       origin: (origin, callback) => {
         // No Origin header means a non-browser client (curl, health check).
         if (!origin || ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
-        return callback(new Error('Not allowed by CORS'));
+        // Reject by withholding the CORS headers, not by erroring: passing an
+        // Error here turns a policy decision into a 500 and breaks proxied dev
+        // setups, where the browser has already treated the call as same-origin.
+        return callback(null, false);
       },
       credentials: true,
     }),
