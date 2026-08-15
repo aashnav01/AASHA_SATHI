@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Phone, KeyRound, User as UserIcon, Loader2 } from 'lucide-react';
 import { Card } from '../components/Card';
 import { useAuth } from '../context/AuthContext';
+import { LanguageSelector } from '../components/LanguageSelector';
 
 export const AuthScreen: React.FC = () => {
   const { t } = useTranslation();
@@ -48,6 +49,12 @@ export const AuthScreen: React.FC = () => {
             ASHA Sathi
           </h1>
           <p className="text-sm text-gray-400 font-semibold mt-1">आशा साथी</p>
+
+          {/* Language must be selectable before sign-in: the TopBar switcher
+              only exists after login, and the app defaults to Hindi. */}
+          <div className="mt-5">
+            <LanguageSelector />
+          </div>
         </div>
 
         <Card className="animate-slide-up">
